@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Exception Playground</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 32px;
+      color: #333;
+    }
+
+    .card {
+      background-color: white;
+      padding: 25px 30px;
+      margin: 15px 0;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    button {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #357ab7;
+    }
+
+    .output {
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-family: 'Fira Code', monospace;
+      white-space: pre-line;
+    }
+
+    .success {
+      color: #9fdf9f;
+    }
+
+    .error {
+      color: #ffaaaa;
+    }
+
+    .finally {
+      color: #ffdd57;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>JavaScript: Exception Handling</h1>
+
+  <!-- Example 1 -->
+  <div class="card">
+    <h2>  1 : Undeclared Variable</h2>
+    <button onclick="example1()">Run</button>
+    <div id="output1" class="output"></div>
+  </div>
+
+  <!-- Example 2 -->
+  <div class="card">
+    <h2> 2 : Divide by Zero</h2>
+    <label>Numerator:</label>
+    <input type="number" id="numA">
+    <label>Denominator:</label>
+    <input type="number" id="numB">
+    <button onclick="example2()">Divide</button>
+    <div id="output2" class="output"></div>
+  </div>
+
+  <!-- Example 3 -->
+  <div class="card">
+    <h2> 3: Array Index Access</h2>
+    <label>Array (comma separated):</label>
+    <input type="text" id="arrayInput" placeholder="e.g., 10,20,30">
+    <label>Index to access:</label>
+    <input type="number" id="arrayIndex">
+    <button onclick="example3()">Access Element</button>
+    <div id="output3" class="output"></div>
+  </div>
+
+  <!-- Example 4 -->
+  <div class="card">
+    <h2> 4 : Finally Block</h2>
+    <button onclick="example4()">Run</button>
+    <div id="output4" class="output"></div>
+  </div>
+
+  <script>
+    function setOutput(id, message, type = '') {
+      const output = document.getElementById(id);
+      output.innerHTML = `<span class="${type}">${message}</span>`;
+    }
+
+    function example1() {
+      try {
+        console.log(nonDeclaredVar); // Not declared
+      } catch (error) {
+        setOutput('output1', `Caught an error: ${error.message}`, 'error');
+      }
+    }
+
+    function example2() {
+      const a = parseFloat(document.getElementById('numA').value);
+      const b = parseFloat(document.getElementById('numB').value);
+
+      try {
+        if (b === 0) {
+          throw new Error("Divide by zero error");
+        }
+        const result = a / b;
+        setOutput('output2', `Result: ${result}`, 'success');
+      } catch (error) {
+        setOutput('output2', `Caught an error: ${error.message}`, 'error');
+      }
+    }
+
+    function example3() {
+      const input = document.getElementById('arrayInput').value;
+      const index = parseInt(document.getElementById('arrayIndex').value);
+      const arr = input.split(',').map(x => x.trim());
+
+      try {
+        if (index < 0 || index >= arr.length) {
+          throw new Error("Out of bound error");
+        }
+        setOutput('output3', `Value at index ${index}: ${arr[index]}`, 'success');
+      } catch (error) {
+        setOutput('output3', `Caught an error: ${error.message}`, 'error');
+      }
+    }
+
+    function example4() {
+      let output = '';
+      try {
+        console.log(undefinedVariable);
+      } catch (error) {
+        output += `<span class="error">Caught an error: ${error.message}</span>\n`;
+      } finally {
+        output += `<span class="finally">Finally block: This always runs.</span>`;
+      }
+      document.getElementById('output4').innerHTML = output;
+    }
+  </script>
+
+</body>
+</html>
